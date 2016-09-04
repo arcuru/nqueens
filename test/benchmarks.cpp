@@ -29,6 +29,7 @@ int main() {
         make_tuple(" array", 14, array_queens),  // Array
         make_tuple("   bit", 16, bit_queens),    // Bitwise
         make_tuple("thread", 17, thread_queens), // Threaded Bitwise
+        make_tuple(" super", 17, super_queens),  // Super-awesome queens
     };
 
     // Options for which benchmarks to run

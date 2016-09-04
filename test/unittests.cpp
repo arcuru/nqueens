@@ -1,5 +1,5 @@
 #include "nqueens.h"
-#include <map>
+#include <vector>
 #define BOOST_TEST_MAIN
 #include <boost/test/unit_test.hpp>
 
@@ -46,4 +46,9 @@ BOOST_AUTO_TEST_CASE(test_bit_queens) {
 BOOST_AUTO_TEST_CASE(test_thread_queens) {
     for (unsigned int i = 1; i < 13; ++i)
         BOOST_REQUIRE_EQUAL(thread_queens(i), expected.at(i));
+}
+
+BOOST_AUTO_TEST_CASE(test_super_queens) {
+    for (unsigned int i = 1; i < 13; ++i)
+        BOOST_REQUIRE_EQUAL(super_queens(i), expected.at(i));
 }
