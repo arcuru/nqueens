@@ -28,14 +28,19 @@ const std::vector<uint64_t> expected = {
     314666222712, // 21
 };
 
+BOOST_AUTO_TEST_CASE(test_flat_queens) {
+    for (unsigned int i = 1; i < 13; ++i)
+        BOOST_REQUIRE_EQUAL(flat_queens(i), expected.at(i));
+}
+
 BOOST_AUTO_TEST_CASE(test_array_queens) {
     for (unsigned int i = 1; i < 13; ++i)
         BOOST_REQUIRE_EQUAL(array_queens(i), expected.at(i));
 }
 
-BOOST_AUTO_TEST_CASE(test_flat_queens) {
+BOOST_AUTO_TEST_CASE(test_dlx_queens) {
     for (unsigned int i = 1; i < 13; ++i)
-        BOOST_REQUIRE_EQUAL(flat_queens(i), expected.at(i));
+        BOOST_REQUIRE_EQUAL(dlx_queens(i), expected.at(i));
 }
 
 BOOST_AUTO_TEST_CASE(test_bit_queens) {

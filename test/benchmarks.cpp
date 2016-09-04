@@ -27,6 +27,7 @@ int main() {
     vector<tuple<string, size_t, uint64_t (*)(size_t)>> funcs = {
         make_tuple("  flat", 14, flat_queens),   // Flat
         make_tuple(" array", 14, array_queens),  // Array
+        make_tuple("   dlx", 14, dlx_queens),    // Array
         make_tuple("   bit", 16, bit_queens),    // Bitwise
         make_tuple("thread", 17, thread_queens), // Threaded Bitwise
         make_tuple(" super", 17, super_queens),  // Super-awesome queens

@@ -1,0 +1,3 @@
+[submodule "deps/dlx"]
+	path = deps/dlx
+	url = git://github.com/patricksjackson/dlx-cpp.git

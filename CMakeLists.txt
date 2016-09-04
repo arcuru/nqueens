@@ -33,6 +33,10 @@ endif()
 # Add library includes
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 
+# Include DLX
+add_subdirectory(${CMAKE_SOURCE_DIR}/deps/dlx EXCLUDE_FROM_ALL)
+include_directories(${CMAKE_SOURCE_DIR}/deps/dlx)
+
 # Build nqueens lib and add to include path
 add_subdirectory(src)
 include_directories(src)
