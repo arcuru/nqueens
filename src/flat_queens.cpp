@@ -19,8 +19,9 @@ static void recurse(std::vector<size_t> &tmp, size_t idx) {
             size_t diff = idx - (&x - &tmp.front());
             return ((i == x) || (i == x + diff) || (i == x - diff));
         };
-        if (std::any_of(tmp.begin(), tmp.begin() + idx, test))
+        if (std::any_of(tmp.begin(), tmp.begin() + idx, test)) {
             continue;
+        }
         tmp[idx] = i;
         recurse(tmp, idx + 1);
     }

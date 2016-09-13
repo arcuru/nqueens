@@ -12,15 +12,13 @@ std::vector<std::vector<int>> Board;
 std::vector<int> queenRow;
 
 // Tests if the given move is a legal move
-int isLegal(int row, int col) { return Board[row][col] == 0 ? true : false; }
+bool isLegal(int row, int col) { return Board[row][col] == 0; }
 
 // Queen - Places/Removes Queen
 // Marks each place on the board like spokes from the queen
 // Looks long but is more efficient doing each continuos line
 void Queen(int row, int col, bool in) {
-    int plus = -1;
-    if (in)
-        plus = 1;
+    int plus = in ? 1 : -1;
     int r, c;
     // Up Right
     r = row - 1;
@@ -45,10 +43,7 @@ void Queen(int row, int col, bool in) {
         c++;
     }
 
-    if (in)
-        Board[row][col] = -1;
-    else
-        Board[row][col] = 0;
+    Board[row][col] = in ? -1 : 0;
 }
 
 // Places Queen in the current column
@@ -69,7 +64,7 @@ void Remove() {
 // Process Column
 // Find the next legal location in the specified column, place a queen there,
 // and advance
-int ProcessColumn() {
+bool ProcessColumn() {
     int row = queenRow[currentCol] + 1;
     if (queenRow[currentCol] >= 0) {
         Remove();
@@ -91,8 +86,9 @@ uint64_t array_queens(size_t n) {
     nRows = n;
     nCols = nRows;
     Board.resize(nRows);
-    for (auto &v : Board)
+    for (auto &v : Board) {
         v.resize(nRows);
+    }
     queenRow.resize(nRows);
 
     int i;
@@ -101,7 +97,7 @@ uint64_t array_queens(size_t n) {
         queenRow[i] = -1;
     }
     while (currentCol >= 0) {
-        int cow = ProcessColumn();
+        bool cow = ProcessColumn();
         if (!cow) {
             --currentCol;
         }

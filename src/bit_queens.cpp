@@ -7,12 +7,12 @@
 // This algorithm was originally based on a solution by Jeff Somers
 //  See: http://www.jsomers.com/nqueen_demo/nqueens.html
 //
-uint64_t bit_queens(size_t board_size) {
+uint64_t bit_queens(size_t n) {
     // Because of mirroring, this technique fails with a board size of < 2
-    if (board_size == 0) {
+    if (n == 0) {
         return 0;
     }
-    if (board_size == 1) {
+    if (n == 1) {
         return 1;
     }
     uint64_t solutions = 0;
@@ -25,13 +25,13 @@ uint64_t bit_queens(size_t board_size) {
         uint32_t bits;     // Current bitmask
     };
 
-    std::vector<board_row> stack(board_size);
+    std::vector<board_row> stack(n);
 
     uint32_t ptr = 0;
     uint32_t lsb;
     uint32_t bitfield;
-    const size_t odd = board_size & 1;
-    const uint32_t mask = (1 << board_size) - 1;
+    const size_t odd = n & 1;
+    const uint32_t mask = (1 << n) - 1;
 
     for (size_t i = 0; i < (1 + odd); ++i) {
         if (0 == i) {
@@ -40,7 +40,7 @@ uint64_t bit_queens(size_t board_size) {
                row will be: 00011, since we're not worrying
                about placing a queen in the center column (yet).
             */
-            const uint32_t half = board_size >> 1; /* divide by two */
+            const uint32_t half = n >> 1; /* divide by two */
             bitfield = (1 << half) - 1;
             stack[0].col = stack[0].pos_diag = stack[0].neg_diag = 0;
         } else {
@@ -51,7 +51,7 @@ uint64_t bit_queens(size_t board_size) {
                So if the board is 5 x 5, the first row will be: 00100, and
                the next row will be 00011.
             */
-            bitfield = 1 << (board_size >> 1);
+            bitfield = 1 << (n >> 1);
             ptr = 1;
 
             // The first row just has one queen (in the middle column).
@@ -80,11 +80,11 @@ uint64_t bit_queens(size_t board_size) {
             lsb = -((signed)bitfield) & bitfield;
             bitfield ^= lsb; // Toggle off the bit
 
-            if (ptr < (board_size - 1)) {
-                const size_t n = ptr++;
-                stack[ptr].col = stack[n].col | lsb;
-                stack[ptr].neg_diag = (stack[n].neg_diag | lsb) >> 1;
-                stack[ptr].pos_diag = (stack[n].pos_diag | lsb) << 1;
+            if (ptr < (n - 1)) {
+                const size_t ind = ptr++;
+                stack[ptr].col = stack[ind].col | lsb;
+                stack[ptr].neg_diag = (stack[ind].neg_diag | lsb) >> 1;
+                stack[ptr].pos_diag = (stack[ind].pos_diag | lsb) << 1;
                 stack[ptr].bits = bitfield;
                 bitfield = mask &
                            ~(stack[ptr].col | stack[ptr].neg_diag |
