@@ -30,7 +30,7 @@ static void recurse(std::vector<size_t> &tmp, size_t idx) {
 
 // Flat queens
 // Solves Nqueens using a single vector of indices denoting queen placements
-std::uint64_t flat_queens(size_t n) {
+uint64_t flat_queens(size_t n) {
     my_count = 0;
     std::vector<size_t> x(n);
     recurse(x, 0);

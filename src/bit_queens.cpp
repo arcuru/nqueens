@@ -1,8 +1,6 @@
 #include "nqueens.h"
 #include <vector>
 
-using namespace std;
-
 //
 // Bitwise queens solution
 //
@@ -27,22 +25,22 @@ uint64_t bit_queens(size_t board_size) {
         uint32_t bits;     // Current bitmask
     };
 
-    vector<board_row> stack(board_size);
+    std::vector<board_row> stack(board_size);
 
     uint32_t ptr = 0;
     uint32_t lsb;
     uint32_t bitfield;
-    const int odd = board_size & 1;
+    const size_t odd = board_size & 1;
     const uint32_t mask = (1 << board_size) - 1;
 
-    for (int i = 0; i < (1 + odd); ++i) {
+    for (size_t i = 0; i < (1 + odd); ++i) {
         if (0 == i) {
             /* Handle half of the board, except the middle
                column. So if the board is 5 x 5, the first
                row will be: 00011, since we're not worrying
                about placing a queen in the center column (yet).
             */
-            const int half = board_size >> 1; /* divide by two */
+            const uint32_t half = board_size >> 1; /* divide by two */
             bitfield = (1 << half) - 1;
             stack[0].col = stack[0].pos_diag = stack[0].neg_diag = 0;
         } else {
@@ -83,7 +81,7 @@ uint64_t bit_queens(size_t board_size) {
             bitfield ^= lsb; // Toggle off the bit
 
             if (ptr < (board_size - 1)) {
-                const int n = ptr++;
+                const size_t n = ptr++;
                 stack[ptr].col = stack[n].col | lsb;
                 stack[ptr].neg_diag = (stack[n].neg_diag | lsb) >> 1;
                 stack[ptr].pos_diag = (stack[n].pos_diag | lsb) << 1;

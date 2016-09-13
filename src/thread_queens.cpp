@@ -2,8 +2,6 @@
 #include <future>
 #include <vector>
 
-using namespace std;
-
 namespace {
 
 // This struct hold the details per each level of iteration
@@ -14,7 +12,7 @@ struct board_row {
     uint32_t bits;     // Current bitmask
 };
 
-uint64_t helper(vector<board_row> stack, size_t ptr, uint32_t bitfield) {
+uint64_t helper(std::vector<board_row> stack, size_t ptr, uint32_t bitfield) {
     uint32_t lsb;
     uint64_t solutions = 0;
     uint32_t board_size = stack.size();
@@ -69,13 +67,13 @@ uint64_t thread_queens(size_t board_size) {
     uint64_t solutions = 0;
 
     solutions = 0;
-    vector<board_row> stack(board_size);
+    std::vector<board_row> stack(board_size);
 
     size_t ptr = 1;
     uint32_t bitfield;
     const uint32_t mask = (1 << board_size) - 1;
 
-    vector<future<uint64_t>> sub_routines;
+    std::vector<std::future<uint64_t>> sub_routines;
 
     stack[0].col = stack[0].pos_diag = stack[0].neg_diag = stack[0].bits = 0;
 
@@ -89,7 +87,7 @@ uint64_t thread_queens(size_t board_size) {
 
         // Launch asynchronously
         sub_routines.push_back(
-            async(launch::async, helper, stack, ptr, bitfield));
+            std::async(std::launch::async, helper, stack, ptr, bitfield));
     }
 
     if (board_size & 1) {

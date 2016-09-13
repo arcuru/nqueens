@@ -1,9 +1,6 @@
 #include "nqueens.h"
-
 #include <stdlib.h>
 #include <vector>
-
-using std::vector;
 
 namespace {
 
@@ -11,8 +8,8 @@ int nRows;
 int nCols;
 
 int currentCol = 0;
-vector<vector<int>> Board;
-vector<int> queenRow;
+std::vector<std::vector<int>> Board;
+std::vector<int> queenRow;
 
 // Tests if the given move is a legal move
 int isLegal(int row, int col) { return Board[row][col] == 0 ? true : false; }

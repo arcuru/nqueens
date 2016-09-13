@@ -1,10 +1,9 @@
+#include "nqueens.h"
 #include "dlx.h"
-
-using namespace std;
 
 uint64_t dlx_queens(size_t n) {
     // Construct vector of vectors for nqueens problem
-    vector<vector<size_t>> definition;
+    std::vector<std::vector<size_t>> definition;
     definition.reserve(n * n);
 
     // One entry per square
