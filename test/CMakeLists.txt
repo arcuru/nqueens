@@ -1,4 +1,10 @@
 
+# Locate Boost libraries: unit_test_framework
+set(Boost_USE_STATIC_LIBS ON)
+set(Boost_USE_MULTITHREADED ON)
+set(Boost_USE_STATIC_RUNTIME OFF)
+find_package(Boost REQUIRED COMPONENTS unit_test_framework)
+
 # Add unittests
 add_executable(unittest unittests.cpp)
 add_test(unittest unittest)

@@ -8,18 +8,19 @@
 
 using namespace std;
 
-// Keeps loop from being optimized out
-static uint64_t c;
-
 // Returns the average runtime of the function over the given repetitions
-double run_bench(uint64_t (*f)(size_t), size_t arg, uint32_t repetitions) {
+template <class F, class... Args>
+auto test(F f, size_t repetitions, Args &&... args) {
     using namespace std::chrono;
     auto start = high_resolution_clock::now();
-    for (size_t count = 0; count < repetitions; ++count) {
-        c = f(arg);
+    auto res = f(std::forward<Args>(args)...);
+    for (size_t count = 1; count < repetitions; ++count) {
+        res = f(std::forward<Args>(args)...);
     }
     auto end = high_resolution_clock::now();
-    return duration_cast<duration<double>>(end - start).count() / repetitions;
+    auto time =
+        duration_cast<duration<double>>(end - start).count() / repetitions;
+    return make_pair(res, time);
 }
 
 int main() {
@@ -48,14 +49,14 @@ int main() {
     };
     cout.precision(6);
     cout << fixed;
-    for (const auto y : config) {
+    for (const auto &y : config) {
         cout << " " << setw(2) << y.first << "-Queens\n";
-        for (const auto x : funcs) {
+        for (const auto &x : funcs) {
             if (get<1>(x) < y.first) {
                 continue;
             }
-            auto avg_time = run_bench(get<2>(x), y.first, y.second);
-            cout << get<0>(x) << '\t' << setw(8) << avg_time << " s\n";
+            auto avg_time = test(get<2>(x), y.second, y.first);
+            cout << get<0>(x) << '\t' << setw(8) << get<1>(avg_time) << " s\n";
         }
         cout << endl;
     }
