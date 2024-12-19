@@ -1,14 +1,19 @@
-
-set(NQUEENS_SOURCE_FILES
-    array_queens.cpp
-    flat_queens.cpp
+add_library(nqueens_core
     dlx_queens.cpp
-    bit_queens.cpp
     thread_queens.cpp
-    super_queens.cpp
+    flat_queens.cpp    # Added
+    array_queens.cpp   # Added
+    bit_queens.cpp     # Added
+    super_queens.cpp   # Added
 )
 
-add_library(nqueens_core ${NQUEENS_SOURCE_FILES})
+target_include_directories(nqueens_core
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
-target_link_libraries(nqueens_core dlx)
-
+target_link_libraries(nqueens_core
+    PUBLIC
+        dlx
+        Threads::Threads
+)

@@ -1,41 +1,47 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.15)
+cmake_policy(SET CMP0048 NEW)  # for project version handling
+if(POLICY CMP0167)
+    cmake_policy(SET CMP0167 NEW)  # for modern Boost finding
+endif()
+
+
+project(nqueens 
+    VERSION 1.0
+    LANGUAGES CXX)
+
+# Modern CMake: Set C++ standard globally
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Output compilation database for clangtidy
-set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Set default build type to Release
-if (NOT CMAKE_BUILD_TYPE)
-    message(STATUS "No build type selected, default to Release.")
+if(NOT CMAKE_BUILD_TYPE)
+    message(STATUS "No build type selected, default to Release")
     set(CMAKE_BUILD_TYPE "Release")
 endif()
 
-# Enable C++14 features on gcc/clang
-if("${CMAKE_CXX_COMPILER_ID}" MATCHES "(GNU|Clang)")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
-endif()
+# Modern threading support
+find_package(Threads REQUIRED)
 
-# Enable Warnings
-# Clang has different warnings
-if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fcolor-diagnostics -pedantic -Wall -Wextra -Wshadow -Werror")
-    set(CMAKE_CXX_FLAGS_DEBUG "-Og")
-    set(CMAKE_CXX_FLAGS_RELEASE "-DNDEBUG -O3")
-else()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
-endif()
-
-# Add library includes
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+# Configure Boost
+set(Boost_USE_STATIC_LIBS OFF)
+set(Boost_USE_MULTITHREADED ON)
+set(Boost_USE_STATIC_RUNTIME OFF)
+find_package(Boost REQUIRED COMPONENTS unit_test_framework)
 
 # Include DLX
-add_subdirectory(${CMAKE_SOURCE_DIR}/deps/dlx EXCLUDE_FROM_ALL)
-include_directories(${CMAKE_SOURCE_DIR}/deps/dlx)
+add_subdirectory(${CMAKE_SOURCE_DIR}/deps/dlx)
+target_include_directories(dlx 
+    PUBLIC 
+        ${CMAKE_SOURCE_DIR}/deps/dlx
+)
 
-# Build nqueens lib and add to include path
+# Build nqueens lib
 add_subdirectory(src)
-include_directories(src)
 
-# Add tests
-enable_testing()
+# Enable testing
+include(CTest)
 add_subdirectory(test)
-
